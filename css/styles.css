@@ -1,0 +1,25 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: grid;
+    place-content: center;
+    height: 100vh;
+    background-color:darkkhaki;
+    gap: .75rem;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+#task {
+}
+
+
+
