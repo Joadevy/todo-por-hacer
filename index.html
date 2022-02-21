@@ -8,21 +8,27 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>To-do por hacer</h1>
-        <p>Organize your tasks and keep calm about your daily routine!</p>
-    </header>
-
     <main>
+        <header>
+            <h1>To-do por hacer</h1>
+            <p>Organize your tasks and keep calm about your daily routine!</p>
+        </header>
+
         <div class="container">
             <nav class="filter">
                 <a href="">All</a>
                 <a href="">Pending</a>
                 <a href="">Completed</a>
             </nav>
+
             <div class="createTask-container">
-                <input type="text" id="task">
+                <input type="text" id="newTask" placeholder="Add a new task">
+                <button value="send" class="btn">Send</button>
             </div>
+
+            <ul class="task-box">
+            </ul>
+
         </div>
     </main>
 
