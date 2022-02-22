@@ -62,7 +62,6 @@ header>p {
 
 .options>.filter>a:hover {
     color:#9600ff;
-    
 }
 
 #newTask {
@@ -114,6 +113,10 @@ ul {
 
 .create-btn,.clear-btn {
     cursor: pointer;
+}
+
+.clear-btn {
+    margin-top: .5rem;
 }
 
 
