@@ -36,6 +36,8 @@ let todos = JSON.parse(localStorage.getItem("todo-list"));
 
 showTodos = () => {
 let li = '';
+if (todos) { // If there are anything in todos.
+// For each todo in the local storage, creates the HTML code adding the data of each one.
     todos.forEach((todo,id)=> {
         li += `<li class="task">
                     <label for="${id}">
@@ -44,8 +46,11 @@ let li = '';
                     </label>
                 </li>`;
     });
+}
+// Add the new list of todos into the taskbox element (UL element).
 taskBox.innerHTML = li;
 }
+
 showTodos();
 
 taskInput.addEventListener('keyup', (e) => {
