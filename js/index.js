@@ -30,9 +30,19 @@ check.forEach(element => element.addEventListener('click', ()=> {
 const taskInput = document.querySelector('.createTask-container input');
 const taskBox = document.querySelector('.task-box');
 const sendBtn = document.querySelector('.createTask-container button');
+const clearBtn = document.querySelector('.container .clear-btn');
 
 // Defining && getting the local storage to-do list (as JSON form)
 let todos = JSON.parse(localStorage.getItem("todo-list"));
+
+clearBtn.addEventListener('click', ()=> {
+    if(todos[0]) { // The clear-btn shouldn't display if there aren't displayed tasks.
+        let userConfirmation = confirm('Do you want to delete all your tasks?')
+        if (userConfirmation) {
+            removeAllTasks();
+        }
+    }
+})
 
 taskInput.addEventListener('keyup', (e) => {
     let userTask = taskInput.value.trim(); // Saves the task input value entered removing the whitespaces (trim method)
@@ -76,7 +86,7 @@ if (todos) { // If there are anything in todos.
                         <p class="${isCompleted}">${todo.name}</p>
                     </label>
                     <div class="removeTask">
-                        <img src = "../assets/icons/removeTask.png" onclick ="removeTask(this)">
+                        <img src = "../assets/icons/removeTask.png" onclick ="removeTask(this.parentElement.parentElement)">
                     </div>
                 </li>`;
     });
@@ -96,14 +106,20 @@ const updateStatus = (task) => {
    localStorage.setItem('todo-list',JSON.stringify(todos)); // Updating the data in local storage (for the status)
 }
 
-showTodos();
-
-const removeTask = (task) => {
-    let selectedTask = task.parentElement.parentElement; // Selects the entire task container: <li class="task"> 
+const removeTask = (selectedTask) => {
+    //selected task is: task.parentElement.parentElement; // Selects the entire task container: <li class="task"> 
     taskBox.removeChild(selectedTask); // Removes the HTML element child of taskBox(<ul class="task-box"></ul>): <li class="task">
-    todos.splice(selectedTask.firstElementChild.firstElementChild.id,1); // Remove the object in the array todos.
+    todos.splice(selectedTask.firstElementChild.firstElementChild.id,1); // Remove the object in the array todos.\
     localStorage.setItem('todo-list',JSON.stringify(todos)); // Updates the local storage with the new array todos after stringify.
 }
+
+const removeAllTasks = () => {
+    todos.splice(0,todos.length);
+    localStorage.setItem('todo-list',JSON.stringify(todos));
+    showTodos();
+}
+
+showTodos();
 
 
 
