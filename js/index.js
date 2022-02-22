@@ -28,44 +28,82 @@ check.forEach(element => element.addEventListener('click', ()=> {
 }))  */
 
 const taskInput = document.querySelector('.createTask-container input');
-const taskBox = document.querySelector('.task-box')
+const taskBox = document.querySelector('.task-box');
+const sendBtn = document.querySelector('.createTask-container button');
 
-// Defining && getting the local storage to do list (as JSON form)
+// Defining && getting the local storage to-do list (as JSON form)
 let todos = JSON.parse(localStorage.getItem("todo-list"));
 
-
-showTodos = () => {
-let li = '';
-if (todos) { // If there are anything in todos.
-// For each todo in the local storage, creates the HTML code adding the data of each one.
-    todos.forEach((todo,id)=> {
-        li += `<li class="task">
-                    <label for="${id}">
-                        <input class="check" type="checkbox" id="${id}">
-                        <p class="p">${todo.name}</p>
-                    </label>
-                </li>`;
-    });
-}
-// Add the new list of todos into the taskbox element (UL element).
-taskBox.innerHTML = li;
-}
-
-showTodos();
-
 taskInput.addEventListener('keyup', (e) => {
-    // Saves the task input value entered removing the whitespaces.
-    let userTask = taskInput.value.trim();
+    let userTask = taskInput.value.trim(); // Saves the task input value entered removing the whitespaces (trim method)
     
     // Saving in localStorage
     if (e.key == 'Enter' && userTask) { // Validates if the key pressed was 'Enter' && user sends anything != whitespaces.
         if (!todos) { // If the todolist local doesn't exist creates an empty array to save each task.
             todos = [];
         }
-        taskInput.value = '';
+        taskInput.value = ''; // Resets the input value
         let taskInfo = {name: userTask, status:"pending"};
-        todos.push(taskInfo); // Push the new task for the array.
+        todos.push(taskInfo); // Push the new task into the array.
         localStorage.setItem('todo-list',JSON.stringify(todos)); // saving the array in local storage after convert it to a string.
         showTodos();
     }
 })
+
+sendBtn.addEventListener('click', (e) => {
+    let userTask = taskInput.value.trim(); // Saves the task input value entered removing the whitespaces (trim method)
+    // Saving in localStorage
+    if (userTask) { // Validates if the user sends anything != whitespaces.
+        if (!todos) { // If the todolist local doesn't exist creates an empty array to save each task.
+            todos = [];
+        }
+        taskInput.value = ''; // Resets the input value
+        let taskInfo = {name: userTask, status:"pending"};
+        todos.push(taskInfo); // Push the new task into the array.
+        localStorage.setItem('todo-list',JSON.stringify(todos)); // saving the array in local storage after convert it to a string.
+        showTodos();
+    }
+})
+
+showTodos = () => {
+let li = '';
+if (todos) { // If there are anything in todos.
+    todos.forEach((todo,id)=> { // For each todo in the local storage, creates the HTML code adding the data of each one.
+        let isCompleted = todo.status == "completed" ? "checked" : ''; // If todo.status == 'completed', saves checked, else saves ''
+        li += `<li class="task">
+                    <label for="${id}">
+                        <input onclick="updateStatus(this)" class="check" type="checkbox" id="${id}" ${isCompleted}>
+                        <p class="${isCompleted}">${todo.name}</p>
+                    </label>
+                    <div class="removeTask">
+                        <img src = "../assets/icons/removeTask.png" onclick ="removeTask(this)">
+                    </div>
+                </li>`;
+    });
+}
+taskBox.innerHTML = li; // Add the new list of todos into the taskbox element (UL element).
+}
+
+const updateStatus = (task) => {
+    let taskName = task.parentElement.lastElementChild; // Last child of the parent(label) is the paragraph
+     if (task.checked){
+        todos[task.id].status = "completed"; // Updates the status of the task to completed
+        taskName.classList.add("checked"); // Adds the class for line-through
+    } else {
+        todos[task.id].status = "pending"; // Updates the status of the task to pending
+        taskName.classList.remove("checked"); // Removes the class for line-through
+    } 
+   localStorage.setItem('todo-list',JSON.stringify(todos)); // Updating the data in local storage (for the status)
+}
+
+showTodos();
+
+const removeTask = (task) => {
+    let selectedTask = task.parentElement.parentElement; // Selects the entire task container: <li class="task"> 
+    taskBox.removeChild(selectedTask); // Removes the HTML element child of taskBox(<ul class="task-box"></ul>): <li class="task">
+    todos.splice(selectedTask.firstElementChild.firstElementChild.id,1); // Remove the object in the array todos.
+    localStorage.setItem('todo-list',JSON.stringify(todos)); // Updates the local storage with the new array todos after stringify.
+}
+
+
+
