@@ -8,14 +8,14 @@ body {
     display: grid;
     place-content: center;
     height: 100vh;
-    background-color:darkkhaki;
+    background-color:whitesmoke;
     gap: .75rem;
 }
 
 
 main {
-    border: 1px solid black;
-    box-shadow: 0,0,10px,10px #222;
+    border: 1px solid #9600ff;
+    box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.2);
     padding: .75rem;
     border-radius: 10px;
 }
@@ -42,14 +42,29 @@ ul {
     gap: 1rem;
 }
 
-label {
+.task {
+    display: flex;
+    justify-content: space-between
+}
+
+.task>label {
     display: flex;
     gap: .25rem;
     align-items: center;
 }
 
-.linethrough {
+.task label p.checked{
     text-decoration: line-through;
 }
+
+/* .task>input {
+    
+} */
+
+.removeTask>img:hover {
+    opacity: 70%;
+    cursor: pointer;
+}
+
 
 
