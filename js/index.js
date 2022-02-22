@@ -31,18 +31,19 @@ const taskInput = document.querySelector('.createTask-container input');
 const taskBox = document.querySelector('.task-box');
 const sendBtn = document.querySelector('.createTask-container button');
 const clearBtn = document.querySelector('.container .clear-btn');
+const container = document.querySelector('.container');
 
 // Defining && getting the local storage to-do list (as JSON form)
 let todos = JSON.parse(localStorage.getItem("todo-list"));
 
-clearBtn.addEventListener('click', ()=> {
+/* clearBtn.addEventListener('click', ()=> {
     if(todos[0]) { // The clear-btn shouldn't display if there aren't displayed tasks.
         let userConfirmation = confirm('Do you want to delete all your tasks?')
         if (userConfirmation) {
             removeAllTasks();
         }
     }
-})
+}) */
 
 taskInput.addEventListener('keyup', (e) => {
     let userTask = taskInput.value.trim(); // Saves the task input value entered removing the whitespaces (trim method)
@@ -77,21 +78,30 @@ sendBtn.addEventListener('click', (e) => {
 
 showTodos = () => {
 let li = '';
-if (todos) { // If there are anything in todos.
-    todos.forEach((todo,id)=> { // For each todo in the local storage, creates the HTML code adding the data of each one.
-        let isCompleted = todo.status == "completed" ? "checked" : ''; // If todo.status == 'completed', saves checked, else saves ''
-        li += `<li class="task">
-                    <label for="${id}">
-                        <input onclick="updateStatus(this)" class="check" type="checkbox" id="${id}" ${isCompleted}>
-                        <p class="${isCompleted}">${todo.name}</p>
-                    </label>
-                    <div class="removeTask">
-                        <img src = "../assets/icons/removeTask.png" onclick ="removeTask(this.parentElement.parentElement)">
-                    </div>
-                </li>`;
-    });
-}
-taskBox.innerHTML = li; // Add the new list of todos into the taskbox element (UL element).
+if (todos.length > 0) { // If there are anything in todos.
+                todos.forEach((todo,id)=> { // For each todo in the local storage, creates the HTML code adding the data of each one.
+                    let isCompleted = todo.status == "completed" ? "checked" : ''; // If todo.status == 'completed', saves checked, else saves ''
+                    li += `<li class="task">
+                                <label for="${id}">
+                                    <input onclick="updateStatus(this)" class="check" type="checkbox" id="${id}" ${isCompleted}>
+                                    <p class="${isCompleted}">${todo.name}</p>
+                                </label>
+                                <div class="removeTask">
+                                    <img src = "../assets/icons/removeTask.png" onclick ="removeTask(this.parentElement.parentElement)">
+                                </div>
+                            </li>`;
+
+                    if(container.lastElementChild.classList.value == 'task-box'){ // Creates a clear-all button if there are no one.
+                        let btnclear = document.createElement("BUTTON");
+                        btnclear.textContent= 'Clear All';
+                        btnclear.classList.add('clear-btn');
+                        container.appendChild(btnclear);   
+                    }
+                });
+                taskBox.innerHTML = li; // Add the new list of todos into the taskbox element (UL element).
+            } else if (todos.length == 0) {
+        container.removeChild(container.lastElementChild);   
+    }    
 }
 
 const updateStatus = (task) => {
@@ -111,6 +121,7 @@ const removeTask = (selectedTask) => {
     taskBox.removeChild(selectedTask); // Removes the HTML element child of taskBox(<ul class="task-box"></ul>): <li class="task">
     todos.splice(selectedTask.firstElementChild.firstElementChild.id,1); // Remove the object in the array todos.\
     localStorage.setItem('todo-list',JSON.stringify(todos)); // Updates the local storage with the new array todos after stringify.
+    showTodos()
 }
 
 const removeAllTasks = () => {
