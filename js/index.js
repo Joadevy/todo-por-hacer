@@ -78,7 +78,7 @@ sendBtn.addEventListener('click', (e) => {
 
 showTodos = () => {
 let li = '';
-if (todos.length > 0) { // If there are anything in todos.
+if (todos) { // If there are anything in todos.
                 todos.forEach((todo,id)=> { // For each todo in the local storage, creates the HTML code adding the data of each one.
                     let isCompleted = todo.status == "completed" ? "checked" : ''; // If todo.status == 'completed', saves checked, else saves ''
                     li += `<li class="task">
@@ -99,9 +99,7 @@ if (todos.length > 0) { // If there are anything in todos.
                     }
                 });
                 taskBox.innerHTML = li; // Add the new list of todos into the taskbox element (UL element).
-            } else if (todos.length == 0) {
-        container.removeChild(container.lastElementChild);   
-    }    
+            }   
 }
 
 const updateStatus = (task) => {
@@ -121,13 +119,21 @@ const removeTask = (selectedTask) => {
     taskBox.removeChild(selectedTask); // Removes the HTML element child of taskBox(<ul class="task-box"></ul>): <li class="task">
     todos.splice(selectedTask.firstElementChild.firstElementChild.id,1); // Remove the object in the array todos.\
     localStorage.setItem('todo-list',JSON.stringify(todos)); // Updates the local storage with the new array todos after stringify.
-    showTodos()
+    showTodos();
+    removeClearButton();
 }
 
 const removeAllTasks = () => {
     todos.splice(0,todos.length);
     localStorage.setItem('todo-list',JSON.stringify(todos));
     showTodos();
+    removeClearButton;
+}
+
+const removeClearButton = () => {
+    if (todos.length == 0) {
+        container.removeChild(container.lastElementChild);   
+    }  
 }
 
 showTodos();
