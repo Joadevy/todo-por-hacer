@@ -42,6 +42,9 @@ sendBtn.addEventListener('click', (e) => {
 })
 
 showTodos = () => {
+pendingTasks.classList.remove('active');
+completedTasks.classList.remove('active');
+allTasks.classList.add('active');
 let li = '';
 if (todos) { // If there are something in todos.
                 todos.forEach((todo,id)=> { // For each todo in the local storage, creates the HTML code adding the data of each one.
@@ -121,13 +124,17 @@ const updateStatus = (task) => {
 }
 
 const removeTask = (selectedTask) => {
-    console.log(selectedTask);
-    //selected task is: task.parentElement.parentElement; // Selects the entire task container: <li class="task"> 
-    taskBox.removeChild(selectedTask); // Removes the HTML element child of taskBox(<ul class="task-box"></ul>): <li class="task">
-    todos.splice(selectedTask.firstElementChild.firstElementChild.id,1); // Remove the object in the array todos.\
-    console.log(todos);
+    // Selected task is: task.parentElement.parentElement, the entire task container: <li class="task"> 
+    taskBox.removeChild(selectedTask); // Removes the HTML element child of <ul class="task-box"></ul>: <li class="task">
+    let positionInTodos;
+        for (let todo in todos){ // Searching for the position in the array todos of the selected task to delete it.
+            if (selectedTask.firstElementChild.lastElementChild.textContent == todos[todo].name){
+            positionInTodos = todo;
+            }
+        };
+    todos.splice(positionInTodos,1); // Remove the object in the array todos.
     localStorage.setItem('todo-list',JSON.stringify(todos)); // Updates the local storage with the new array todos after stringify.
-    removeClearButton();
+    removeClearButton(); // Checking if the clear button should dissappear or not.
 }
 
 const removeAllTasks = () => { // Removes all the tasks after the user confirmation.
