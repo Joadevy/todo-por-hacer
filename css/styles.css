@@ -21,6 +21,7 @@ main {
     padding: .75rem;
     border-radius: 10px;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 450px; 
 }
 
 header {
@@ -67,14 +68,12 @@ header>p {
 #newTask {
     margin-bottom: 0.5rem;
     background-color: whitesmoke;
-}
-
-.createTask-container>input {
     border: none;
     padding: .25rem;
     border-bottom: 1px solid #222;
     outline-color: #9600ff;
     margin-right: .5rem;
+    width: 60%;
 }
 
 .createTask-container>button {
@@ -101,9 +100,6 @@ ul {
 
 .task label p.checked{
     text-decoration: line-through;
-}
-
-.task>input {
 }
 
 .removeTask>img:hover {
