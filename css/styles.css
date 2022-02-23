@@ -66,6 +66,7 @@ header>p {
 
 #newTask {
     margin-bottom: 0.5rem;
+    background-color: whitesmoke;
 }
 
 .createTask-container>input {
