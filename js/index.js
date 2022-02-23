@@ -2,6 +2,10 @@ const taskInput = document.querySelector('.createTask-container input');
 const taskBox = document.querySelector('.task-box');
 const sendBtn = document.querySelector('.createTask-container button');
 const container = document.querySelector('.container');
+const allTasks = document.getElementById('all');
+const pendingTasks = document.getElementById('pending');
+const completedTasks = document.getElementById('completed');
+
 
 // Defining && getting the local storage to-do list (as JSON form)
 let todos = JSON.parse(localStorage.getItem("todo-list"));
@@ -39,7 +43,7 @@ sendBtn.addEventListener('click', (e) => {
 
 showTodos = () => {
 let li = '';
-if (todos) { // If there are anything in todos.
+if (todos) { // If there are something in todos.
                 todos.forEach((todo,id)=> { // For each todo in the local storage, creates the HTML code adding the data of each one.
                     let isCompleted = todo.status == "completed" ? "checked" : ''; // If todo.status == 'completed', saves checked, else saves ''
                     li += `<li class="task">
@@ -62,6 +66,31 @@ if (todos) { // If there are anything in todos.
                 });
                 taskBox.innerHTML = li; // Add the new list of todos into the taskbox element (UL element).
             }   
+}
+
+allTasks.addEventListener('click', ()=> showTodos());
+
+pendingTasks.addEventListener('click', () => showFilteredTodos("pending"));
+
+completedTasks.addEventListener('click', () => showFilteredTodos("completed"));
+
+const showFilteredTodos = (filter) => {
+    let li = '';
+    todos.forEach((todo,id) => { // Searching in the todos array for todos with 'pending' status
+        let isCompleted = todo.status == "completed" ? "checked" : '';
+        if(todo.status == filter){
+            li += `<li class="task">
+                    <label for="${id}">
+                        <input onclick="updateStatus(this)" class="check" type="checkbox" id="${id}" ${isCompleted}>
+                        <p class="${isCompleted}">${todo.name}</p>
+                    </label>
+                    <div class="removeTask">
+                        <img src = "../assets/icons/removeTask.png" onclick ="removeTask(this.parentElement.parentElement)">
+                    </div>
+                </li>`; 
+        }
+    });
+    taskBox.innerHTML = li;
 }
 
 const updateStatus = (task) => {
