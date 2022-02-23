@@ -54,7 +54,7 @@ header>p {
     gap: 1rem;
 }
 
-.options>.filter>a {
+.filter a {
     text-decoration: none;
     font-weight: bold;
     color: #222;
@@ -62,6 +62,7 @@ header>p {
 
 .options>.filter>a:hover {
     color:#9600ff;
+    cursor: pointer;
 }
 
 #newTask {
@@ -117,6 +118,10 @@ ul {
 
 .clear-btn {
     margin-top: .5rem;
+}
+
+.filter .active {
+    color: #9600ff;
 }
 
 

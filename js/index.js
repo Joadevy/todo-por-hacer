@@ -68,11 +68,26 @@ if (todos) { // If there are something in todos.
             }   
 }
 
-allTasks.addEventListener('click', ()=> showTodos());
+allTasks.addEventListener('click', ()=> {
+    allTasks.classList.toggle('active');
+    pendingTasks.classList.remove('active');
+    completedTasks.classList.remove('active');
+    showTodos()
+});
 
-pendingTasks.addEventListener('click', () => showFilteredTodos("pending"));
+pendingTasks.addEventListener('click', () => {
+    allTasks.classList.remove('active');
+    pendingTasks.classList.toggle('active');
+    completedTasks.classList.remove('active');
+    showFilteredTodos("pending")
+});
 
-completedTasks.addEventListener('click', () => showFilteredTodos("completed"));
+completedTasks.addEventListener('click', () => {
+    allTasks.classList.remove('active');
+    pendingTasks.classList.remove('active');
+    completedTasks.classList.toggle('active');
+    showFilteredTodos("completed")
+});
 
 const showFilteredTodos = (filter) => {
     let li = '';
@@ -106,11 +121,12 @@ const updateStatus = (task) => {
 }
 
 const removeTask = (selectedTask) => {
+    console.log(selectedTask);
     //selected task is: task.parentElement.parentElement; // Selects the entire task container: <li class="task"> 
     taskBox.removeChild(selectedTask); // Removes the HTML element child of taskBox(<ul class="task-box"></ul>): <li class="task">
     todos.splice(selectedTask.firstElementChild.firstElementChild.id,1); // Remove the object in the array todos.\
+    console.log(todos);
     localStorage.setItem('todo-list',JSON.stringify(todos)); // Updates the local storage with the new array todos after stringify.
-    showTodos();
     removeClearButton();
 }
 
