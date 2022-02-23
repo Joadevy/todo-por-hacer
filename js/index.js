@@ -95,6 +95,7 @@ if (todos) { // If there are anything in todos.
                         let btnclear = document.createElement("BUTTON");
                         btnclear.textContent= 'Clear All';
                         btnclear.classList.add('clear-btn');
+                        btnclear.onclick = removeAllTasks;
                         container.appendChild(btnclear);   
                     }
                 });
@@ -124,10 +125,13 @@ const removeTask = (selectedTask) => {
 }
 
 const removeAllTasks = () => {
-    todos.splice(0,todos.length);
-    localStorage.setItem('todo-list',JSON.stringify(todos));
-    showTodos();
-    removeClearButton;
+    let userConfirmation = confirm('Do you want to delete all your tasks?')
+        if (userConfirmation) {
+            todos.splice(0,todos.length);
+            localStorage.setItem('todo-list',JSON.stringify(todos));
+            showTodos();
+            removeClearButton();
+        }
 }
 
 const removeClearButton = () => {
