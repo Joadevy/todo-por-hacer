@@ -1,49 +1,10 @@
-/* const task = document.getElementById('newTask');
-const btn = document.querySelector('.btn');
-const cont = document.querySelector('.task-box');
-const p = document.querySelectorAll('.p')
-let check = document.querySelectorAll('.check');
-
-btn.addEventListener('click',() => {
-    const label = document.createElement('LABEL');
-    let checkbox = document.createElement('INPUT');
-    let p = document.createElement('P');
-    checkbox.type = 'checkbox';
-    checkbox.classList.add('check');
-    label.appendChild(checkbox);
-    label.appendChild(p);
-    if (task.value != "") {
-        p.textContent = task.value;
-        cont.appendChild(label);
-        task.value = '';
-        console.log(checkbox);
-        check += checkbox;
-    } else {
-        alert('NO MI REY!');
-    }
-})
-
-check.forEach(element => element.addEventListener('click', ()=> {
-    element.nextElementSibling.classList.toggle('linethrough');
-}))  */
-
 const taskInput = document.querySelector('.createTask-container input');
 const taskBox = document.querySelector('.task-box');
 const sendBtn = document.querySelector('.createTask-container button');
-const clearBtn = document.querySelector('.container .clear-btn');
 const container = document.querySelector('.container');
 
 // Defining && getting the local storage to-do list (as JSON form)
 let todos = JSON.parse(localStorage.getItem("todo-list"));
-
-/* clearBtn.addEventListener('click', ()=> {
-    if(todos[0]) { // The clear-btn shouldn't display if there aren't displayed tasks.
-        let userConfirmation = confirm('Do you want to delete all your tasks?')
-        if (userConfirmation) {
-            removeAllTasks();
-        }
-    }
-}) */
 
 taskInput.addEventListener('keyup', (e) => {
     let userTask = taskInput.value.trim(); // Saves the task input value entered removing the whitespaces (trim method)
@@ -95,7 +56,7 @@ if (todos) { // If there are anything in todos.
                         let btnclear = document.createElement("BUTTON");
                         btnclear.textContent= 'Clear All';
                         btnclear.classList.add('clear-btn');
-                        btnclear.onclick = removeAllTasks;
+                        btnclear.onclick = removeAllTasks; // Adding the functionality
                         container.appendChild(btnclear);   
                     }
                 });
@@ -104,7 +65,7 @@ if (todos) { // If there are anything in todos.
 }
 
 const updateStatus = (task) => {
-    let taskName = task.parentElement.lastElementChild; // Last child of the parent(label) is the paragraph
+    let taskName = task.parentElement.lastElementChild; // Last child of the parent (label) is the paragraph
      if (task.checked){
         todos[task.id].status = "completed"; // Updates the status of the task to completed
         taskName.classList.add("checked"); // Adds the class for line-through
@@ -112,7 +73,7 @@ const updateStatus = (task) => {
         todos[task.id].status = "pending"; // Updates the status of the task to pending
         taskName.classList.remove("checked"); // Removes the class for line-through
     } 
-   localStorage.setItem('todo-list',JSON.stringify(todos)); // Updating the data in local storage (for the status)
+   localStorage.setItem('todo-list',JSON.stringify(todos)); // Updating the data in local storage (for update the status)
 }
 
 const removeTask = (selectedTask) => {
@@ -124,19 +85,19 @@ const removeTask = (selectedTask) => {
     removeClearButton();
 }
 
-const removeAllTasks = () => {
+const removeAllTasks = () => { // Removes all the tasks after the user confirmation.
     let userConfirmation = confirm('Do you want to delete all your tasks?')
         if (userConfirmation) {
-            todos.splice(0,todos.length);
-            localStorage.setItem('todo-list',JSON.stringify(todos));
-            showTodos();
-            removeClearButton();
+            todos.splice(0,todos.length); // Remove all the elements in the todos array.
+            localStorage.setItem('todo-list',JSON.stringify(todos)); // Update the local storage after stringify the array content.
+            showTodos(); // Update the DOM
+            removeClearButton(); // Removes the clear all btn because there aren't tasks to do.
         }
 }
 
-const removeClearButton = () => {
-    if (todos.length == 0) {
-        container.removeChild(container.lastElementChild);   
+const removeClearButton = () => { // If todos == 0, there aren't tasks to do.
+    if (todos.length == 0) { 
+        container.removeChild(container.lastElementChild); // The lastElementChild of container is the clear btn.
     }  
 }
 
