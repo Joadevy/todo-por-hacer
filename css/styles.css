@@ -61,7 +61,6 @@ header>p {
 }
 
 .options>.filter>a:hover {
-    color:#9600ff;
     cursor: pointer;
 }
 
@@ -101,7 +100,6 @@ ul {
 
 .task label p.checked{
     text-decoration: line-through;
-    text-decoration-color: #9600ff;
 }
 
 .task>input {
