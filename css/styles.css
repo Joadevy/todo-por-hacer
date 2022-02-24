@@ -74,10 +74,20 @@ header>p {
     outline-color: #9600ff;
     margin-right: .5rem;
     width: 60%;
+    font-size: .9rem;
 }
 
-.createTask-container>button {
+button {
     padding: .25rem;
+    border: none;
+    border: 1px solid #222;
+    border-radius: 5px;
+}
+
+button:hover {
+    color: darkgray;
+    opacity: .75;
+    border: 1px solid #5c15fe;
 }
 
 ul {
@@ -89,12 +99,13 @@ ul {
 
 .task {
     display: flex;
-    justify-content: space-between
+    justify-content: space-between;
+    gap: .5rem;
 }
 
 .task>label {
     display: flex;
-    gap: .25rem;
+    gap: .5rem;
     align-items: center;
 }
 
