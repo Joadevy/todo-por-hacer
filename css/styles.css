@@ -145,10 +145,53 @@ ul {
 }
 
 .task>label {
-    display: flex;
+    /* display: flex;
     gap: .5rem;
-    align-items: center;
+    align-items: center; */
+    display: grid;
+    place-items: center;
+    grid-template-columns: 1em auto;
+    gap: 0.5em;
 }
+
+input[type="checkbox"] {
+    /* Add if not using autoprefixer */
+    -webkit-appearance: none;
+    appearance: none;
+    /* For iOS < 15 to remove gradient background */
+    background-color: rgb(230, 230, 230);
+    /* Not removed via appearance */
+    margin: 0;
+    font: inherit;
+    color: #222;
+    width: 1em;
+    height: 1em;
+    border: 0.1em solid #222;
+    border-radius: 0.15em;
+    transform: translateY(-0.075em);
+    display: grid;
+    place-content: center;
+  }
+
+  input[type="checkbox"]::before {
+    content: "";
+    width: 0.6em;
+    height: 0.6em;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em #5c15fe;
+    transform-origin: bottom left;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  }
+
+  input[type="checkbox"]:checked::before {
+    transform: scale(1);
+  }
+
+  input[type="checkbox"]:focus {
+    outline: max(.5px, 0.12em) solid #9600ff;
+    outline-offset: max(1px, 0.12em);
+  }
 
 .task label p.checked{
     text-decoration: line-through;
