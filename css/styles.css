@@ -78,13 +78,13 @@ header>p {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 1rem 0 .75rem 0;
+    margin-top: 1rem;
     border-bottom: 1px solid darkgray;
 }
 
 .options>.filter {
     display: flex;
-    gap: 1rem;
+    gap: 1.25rem;
     margin-bottom: .25rem;
 }
 
@@ -109,8 +109,8 @@ header>p {
     border-bottom: 1px solid gray;
     outline-color: #9600ff;
     margin-right: .5rem;
-    width: 60%;
-    font-size: .9rem;
+    width: 65%;
+    font-size: 1rem;
 }
 
 button {
