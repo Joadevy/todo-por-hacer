@@ -67,12 +67,15 @@ if (todos) { // If there are something in todos.
                         container.appendChild(btnclear);   
                     }
                 });
-                taskBox.innerHTML = li; // Add the new list of todos into the taskbox element (UL element).
             }   
+            if (li == '') {
+                li = "You don't have any task here!";
+            }
+            taskBox.innerHTML = li; // Add the new list of todos into the taskbox element (UL element).
 }
 
 allTasks.addEventListener('click', ()=> {
-    allTasks.classList.toggle('active');
+    allTasks.classList.add('active');
     pendingTasks.classList.remove('active');
     completedTasks.classList.remove('active');
     showTodos()
@@ -80,7 +83,7 @@ allTasks.addEventListener('click', ()=> {
 
 pendingTasks.addEventListener('click', () => {
     allTasks.classList.remove('active');
-    pendingTasks.classList.toggle('active');
+    pendingTasks.classList.add('active');
     completedTasks.classList.remove('active');
     showFilteredTodos("pending")
 });
@@ -88,7 +91,7 @@ pendingTasks.addEventListener('click', () => {
 completedTasks.addEventListener('click', () => {
     allTasks.classList.remove('active');
     pendingTasks.classList.remove('active');
-    completedTasks.classList.toggle('active');
+    completedTasks.classList.add('active');
     showFilteredTodos("completed")
 });
 
@@ -108,6 +111,9 @@ const showFilteredTodos = (filter) => {
                 </li>`; 
         }
     });
+    if (li == '') {
+        li = "You don't have any task here!";
+    }
     taskBox.innerHTML = li;
 }
 
