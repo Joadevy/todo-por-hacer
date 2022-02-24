@@ -110,6 +110,10 @@ const showFilteredTodos = (filter) => {
     });
     if (li == '') {
         li = "You don't have any task here!";
+        if (container.lastElementChild.classList == "clear-btn"){
+            console.log(container.lastElementChild);
+            container.removeChild(container.lastElementChild);
+        }
     }
     taskBox.innerHTML = li;
 }
@@ -157,6 +161,20 @@ const removeClearButton = () => { // If todos == 0, there aren't tasks to do.
 }
 
 showTodos();
+
+
+/* const clearButtonFilteredTasks = (filter) => {
+    let filteredArray = [];
+    filteredArray = todos.filter(task => task.status == 'filter');
+    if (filteredArray.length === 0 && container.lastElementChild.classList == "clear-btn") {
+        let child = container.lastElementChild;
+        console.log(child);
+        container.removeChild(child);
+    } else {
+        console.log('no ta vacio rey');
+        console.log(filteredArray);
+    }
+} */
 
 
 
