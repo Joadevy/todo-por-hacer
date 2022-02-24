@@ -68,7 +68,6 @@ if (todos) { // If there are something in todos.
                     }
                 });
             }   
-           
             taskBox.innerHTML = li; // Add the new list of todos into the taskbox element (UL element).
 }
 
