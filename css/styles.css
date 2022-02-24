@@ -152,6 +152,7 @@ ul {
     place-items: center;
     grid-template-columns: 1em auto;
     gap: 0.5em;
+    cursor: pointer;
 }
 
 input[type="checkbox"] {
