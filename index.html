@@ -15,23 +15,21 @@
             <p>Organize your tasks and keep calm about your daily routine!</p>
         </header>
 
+        <div class="options">
+            <nav class="filter">
+                <a id="all">All</a>
+                <a id="pending">Pending</a>
+                <a id="completed">Completed</a>
+            </nav>
+        </div>
+        
+        <div class="createTask-container">
+            <input type="text" id="newTask" placeholder="Add a new task">
+            <button class="create-btn">Create</button>
+        </div>
+
         <div class="container">
-            <div class="options">
-                <nav class="filter">
-                    <a href="">All</a>
-                    <a href="">Pending</a>
-                    <a href="">Completed</a>
-                </nav>
-            </div>
-
-            <div class="createTask-container">
-                <input type="text" id="newTask" placeholder="Add a new task">
-                <button class="create-btn">Create</button>
-            </div>
-
             <ul class="task-box"></ul>
-
-            <button class="clear-btn">Clear all</button>
         </div>
     </main>
 
