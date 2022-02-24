@@ -68,9 +68,7 @@ if (todos) { // If there are something in todos.
                     }
                 });
             }   
-            if (li == '') {
-                li = "You don't have any task here!";
-            }
+           
             taskBox.innerHTML = li; // Add the new list of todos into the taskbox element (UL element).
 }
 
