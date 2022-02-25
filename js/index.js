@@ -22,14 +22,12 @@ taskInput.addEventListener('keyup', event => {
             let taskInfo = {name: userTask, status:"pending"};
             todos.push(taskInfo); // Push the new task into the array.
         } else { // If is a edited task
-            console.log('el item que se edita es el de abajo c:');
-            console.log(todos[idEdited]);
             todos[idEdited].name = userTask;
             isEdited = false;
         }
         taskInput.value = ''; // Resets the input value
         localStorage.setItem('todo-list',JSON.stringify(todos)); // saving the array in local storage after convert it to a string.
-        show('all');
+        showActive();
     }
 });
 
@@ -37,12 +35,17 @@ sendBtn.addEventListener('click', (e) => {
     let userTask = taskInput.value.trim(); // Saves the task input value entered removing the whitespaces (trim method)
     // Saving in localStorage
     if (userTask) { // Validates if the user sends anything != whitespaces.
-        if (!todos) { // If the todolist local doesn't exist creates an empty array to save each task.
-            todos = [];
+        if (!isEdited) { // If is a new task
+            if (!todos) { // If the todolist local doesn't exist creates an empty array to save each task.
+                todos = [];
+            }
+            let taskInfo = {name: userTask, status:"pending"};
+            todos.push(taskInfo); // Push the new task into the array.
+        } else { // If is a edited task
+            todos[idEdited].name = userTask;
+            isEdited = false;
         }
         taskInput.value = ''; // Resets the input value
-        let taskInfo = {name: userTask, status:"pending"};
-        todos.push(taskInfo); // Push the new task into the array.
         localStorage.setItem('todo-list',JSON.stringify(todos)); // saving the array in local storage after convert it to a string.
         show('all');
     }
@@ -82,9 +85,9 @@ const updateStatus = (task) => {
 }
 
 const removeTask = (selectedTask,id) => {
-    taskBox.removeChild(selectedTask);
     todos.splice(id,1); // Remove the object in the array todos.
     localStorage.setItem('todo-list',JSON.stringify(todos)); // Updates the local storage with the new array todos after stringify.
+    showActive();
 }
 
 const removeAllTasks = () => { // Removes all the tasks after the user confirmation.
@@ -135,7 +138,7 @@ const show = (status) => {
                         <div class="settings">
                             <img src = "../assets/icons/options.png" onclick ="showMenu(this)">
                             <ul class="task-menu">
-                                    <li onclick ="editTask('${todo.name}',${id})">Edit</li>
+                                    <li onclick ="editTask('${todo.name}')">Edit</li>
                                     <li onclick ="removeTask(parentElement.parentElement.parentElement,${id})">Delete</li>
                             </ul>
                         </div>
@@ -173,7 +176,7 @@ const show = (status) => {
                         <div class="settings">
                             <img src = "../assets/icons/options.png" onclick ="showMenu(this)">
                             <ul class="task-menu">
-                                    <li onclick ="editTask('${todo.name}',${id})">Edit</li>
+                                    <li onclick ="editTask('${todo.name}')">Edit</li>
                                     <li onclick ="removeTask(parentElement.parentElement.parentElement,${id},'${todo.status}')">Delete</li>
                             </ul>
                         </div>
@@ -207,6 +210,17 @@ const show = (status) => {
     taskBox.innerHTML = li;
 }
 
+// Calls the show with the status depending by the current filter active.
+const showActive = () => {
+    if (allTasks.classList.contains('active')){
+        show('all');
+    } else if (pendingTasks.classList.contains('active')){
+        show('pending');
+    } else if (completedTasks.classList.contains('active')) {
+        show('completed');
+    }
+}
+
 const showMenu = (selectedTask) => { // Displays the menu-task for edit/delete when clicks the options button.
     let taskMenu = selectedTask.parentElement.lastElementChild; 
     taskMenu.classList.add("show");
@@ -217,9 +231,15 @@ const showMenu = (selectedTask) => { // Displays the menu-task for edit/delete w
     })
 }
 
-const editTask = (task,id) => {
+const editTask = (task) => {
+    let identifier;
+    for (let todo in todos) {
+         if (todos[todo].name == task) {
+            identifier = todo;
+        } 
+    }
     taskInput.value = task;
-    idEdited = id;
+    idEdited = identifier;
     isEdited = true;
 }
 
