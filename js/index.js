@@ -84,9 +84,12 @@ const removeTask = (selectedTask) => {
         };
     todos.splice(positionInTodos,1); // Remove the object in the array todos.
     localStorage.setItem('todo-list',JSON.stringify(todos)); // Updates the local storage with the new array todos after stringify.
-    removeClearButton(); // Checking if the clear button should dissappear or not.
+    //removeClearButton(); // Checking if the clear button should dissappear or not.
     if (taskBox.firstElementChild === null) { // Displays the no tasks message if there aren't tasks.
         taskBox.textContent = "You don't have any task here!";
+        if (container.lastElementChild.classList.value === "clear-btn"){
+            container.removeChild(container.lastElementChild);
+        }
     }
 }
 
@@ -125,21 +128,36 @@ const show = (status) => {
                     </li>`; 
             }
         });
-            // Removing the clear all button in the pending && completed sections
+            // Replacing the clear all button in the filters for clear pending && clear completed.
             if (container.lastElementChild.classList.value === "clear-btn"){
-                container.removeChild(container.lastElementChild);
-                /* Aca podria poner el replace.child
                 if (status == 'pending') {
+                    let btnclearPending = document.createElement("BUTTON");
+                    btnclearPending.textContent= 'Clear Pending';
+                    btnclearPending.classList.add('clear-btn');
+                    btnclearPending.onclick = removePendingTasks;
+                    container.replaceChild(btnclearPending,document.querySelector('.clear-btn')); 
+                } else if (status == 'completed') {
+                    let btnclearCompleted = document.createElement("BUTTON");
+                    btnclearCompleted.textContent= 'Clear Completed';
+                    btnclearCompleted.classList.add('clear-btn');
+                    btnclearCompleted.addEventListener('click',removeCompletedTasks);
+                    container.replaceChild(btnclearCompleted,document.querySelector('.clear-btn')); 
+                } 
+            } 
+            // Creating the clear (pending||completed) buttons if there aren't exist.
+            else if (container.firstElementChild != null && status == 'pending') {
                 let btnclearPending = document.createElement("BUTTON");
                 btnclearPending.textContent= 'Clear Pending';
-                btnclearAll.classList.add('clear-btn pending'); // Pending es para mandarle el e.target.classList.value == 'pending' y distinguirlo del completed.
-                btnclearPending.onclick = removeTask(pending); // Si esto no se puede hacer la funcion aca nomas, o sino probar con pasar el evento como parametro y analizarlo.
-                container.replaceChild(btnclearPending,document.querySelector('.clear-btn')); 
-                } else if (status == 'completed') {
-                    lo mismo pero para completed
-                }
-                */
-            } 
+                btnclearPending.classList.add('clear-btn');
+                btnclearPending.onclick = removePendingTasks; 
+                container.appendChild(btnclearPending); 
+            } else if (container.firstElementChild != null && status == 'completed'){
+                let btnclearCompleted = document.createElement("BUTTON");
+                btnclearCompleted.textContent= 'Clear Completed';
+                btnclearCompleted.classList.add('clear-btn'); 
+                btnclearCompleted.onclick = removeCompletedTasks;
+                container.appendChild(btnclearCompleted); 
+            }
     } 
     // Showing all the tasks.
     else if (status == 'all'){
@@ -162,13 +180,17 @@ const show = (status) => {
             btnclear.classList.add('clear-btn');
             btnclear.onclick = removeAllTasks; // Adding the functionality
             container.appendChild(btnclear);   
-        }  /* else if (container.lastElementChild.classList.value == 'clearPending' || == 'clearCompleted'){
+        }  
+        // <<<<<<<< DE ACA
+         else if (container.lastElementChild.classList.value === "clear-btn"){
                 let btnclearAll = document.createElement("BUTTON");
                 btnclearAll.textContent= 'Clear All';
                 btnclearAll.classList.add('clear-btn');
                 btnclearAll.onclick = removeAllTasks;
                 container.replaceChild(btnclearAll,document.querySelector('.clear-btn')); 
-        } */
+        } 
+
+        // <<<<<<<<<<< HASTA ACA
 
         // Add the class & remove the others because this function is called when the user tips a new task.
         allTasks.classList.add('active');
@@ -178,10 +200,35 @@ const show = (status) => {
     // If there aren't tasks, then shows the message and removes the clear button.
     if (li == '') {
         li = "You don't have any task here!";
-        removeClearButton();
+        // Removing the clear btn because there aren't tasks.
+        if (container.lastElementChild.classList.value === "clear-btn"){
+            container.removeChild(container.lastElementChild);
+        }
     }
     // Updating the DOM.
     taskBox.innerHTML = li;
+}
+
+// Removes only the Completed tasks after user confirmation.
+const removeCompletedTasks = ()=> {
+    let userConfirmation = confirm('Do you want to delete your completed tasks?');
+    if (userConfirmation && todos) {
+        pendingArray = todos.filter(task => task.status == 'pending');
+        todos = pendingArray;
+        localStorage.setItem('todo-list',JSON.stringify(todos));
+        show('completed');
+    }
+}
+
+// Removes only the pending tasks after user confirmation.
+const removePendingTasks = ()=> {
+    let userConfirmation = confirm('Do you want to delete your pending tasks?');
+    if (userConfirmation && todos) {
+        let completedArray = todos.filter(task => task.status == 'completed');
+        todos = completedArray;
+        localStorage.setItem('todo-list',JSON.stringify(todos));
+        show('pending');
+    }
 }
 
 // Displaying all the tasks by default.
