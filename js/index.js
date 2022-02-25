@@ -68,6 +68,9 @@ if (todos) { // If there are something in todos.
                     }
                 });
             }   
+            if (li == ''){
+                li = "You don't have any task here!";
+            }
             taskBox.innerHTML = li; // Add the new list of todos into the taskbox element (UL element).
 }
 
@@ -110,12 +113,12 @@ const showFilteredTodos = (filter) => {
     });
     if (li == '') {
         li = "You don't have any task here!";
-        if (container.lastElementChild.classList == "clear-btn"){
-            console.log(container.lastElementChild);
-            container.removeChild(container.lastElementChild);
-        }
     }
     taskBox.innerHTML = li;
+    // Removing the clear all button in the pending&&completed sections
+     if (container.lastElementChild.classList.value === "clear-btn"){
+        container.removeChild(container.lastElementChild);
+    } 
 }
 
 const updateStatus = (task) => {
@@ -136,7 +139,7 @@ const removeTask = (selectedTask) => {
     let positionInTodos;
         for (let todo in todos){ // Searching for the position in the array todos of the selected task to delete it.
             if (selectedTask.firstElementChild.lastElementChild.textContent == todos[todo].name){
-            positionInTodos = todo;
+                positionInTodos = todo;
             }
         };
     todos.splice(positionInTodos,1); // Remove the object in the array todos.
@@ -155,8 +158,9 @@ const removeAllTasks = () => { // Removes all the tasks after the user confirmat
 }
 
 const removeClearButton = () => { // If todos == 0, there aren't tasks to do.
-    if (todos.length == 0) { 
+    if (todos.length == 0 && container.lastElementChild.classList.value === "clear-btn"){ 
         container.removeChild(container.lastElementChild); // The lastElementChild of container is the clear btn.
+        taskBox.textContent = "You don't have any task here!";
     }  
 }
 
