@@ -82,19 +82,9 @@ const updateStatus = (task) => {
 }
 
 const removeTask = (selectedTask,id) => {
-    let completed = selectedTask.firstElementChild.lastElementChild.classList.contains('checked');
-    console.log(id);
-    console.log(completed);
+    taskBox.removeChild(selectedTask);
     todos.splice(id,1); // Remove the object in the array todos.
     localStorage.setItem('todo-list',JSON.stringify(todos)); // Updates the local storage with the new array todos after stringify.
-    console.log(selectedTask);
-    if (completed == false){
-        console.log('ola');
-        show('all');
-    } else if (completed == true){
-        console.log('XAU');
-        show('completed');
-    }
 }
 
 const removeAllTasks = () => { // Removes all the tasks after the user confirmation.
