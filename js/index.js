@@ -138,8 +138,12 @@ const show = (status) => {
                             <input onclick="updateStatus(this)" class="check" type="checkbox" id="${id}" ${isCompleted}>
                             <p class="${isCompleted}">${todo.name}</p>
                         </label>
-                        <div class="removeTask">
-                            <img src = "../assets/icons/removeTask.png" onclick ="removeTask(this.parentElement.parentElement)">
+                        <div class="settings">
+                            <img src = "../assets/icons/options.png" onclick ="showMenu(this)">
+                            <ul class="task-menu">
+                                    <li onclick ="editTask(parentElement.parentElement.parentElement)">Edit</li>
+                                    <li onclick ="removeTask(parentElement.parentElement.parentElement)">Delete</li>
+                            </ul>
                         </div>
                     </li>`; 
             }
@@ -172,8 +176,12 @@ const show = (status) => {
                             <input onclick="updateStatus(this)" class="check" type="checkbox" id="${id}" ${isCompleted}>
                             <p class="${isCompleted}">${todo.name}</p>
                         </label>
-                        <div class="removeTask">
-                            <img src = "../assets/icons/removeTask.png" onclick ="removeTask(this.parentElement.parentElement)">
+                        <div class="settings">
+                            <img src = "../assets/icons/options.png" onclick ="showMenu(this)">
+                            <ul class="task-menu">
+                                    <li onclick ="editTask(parentElement.parentElement.parentElement)">Edit</li>
+                                    <li onclick ="removeTask(parentElement.parentElement.parentElement)">Delete</li>
+                            </ul>
                         </div>
                     </li>`; 
         });
@@ -203,6 +211,24 @@ const show = (status) => {
     }
     // Updating the DOM.
     taskBox.innerHTML = li;
+}
+
+const showMenu = (selectedTask) => { // Displays the menu-task for edit/delete when clicks the options button.
+    console.log(selectedTask);
+    let taskMenu = selectedTask.parentElement.lastElementChild; 
+    taskMenu.classList.add("show");
+    document.addEventListener('click', e => { // If user clicks != options, removes the taskmenu
+        if (e.target != selectedTask)  {
+            taskMenu.classList.remove("show");
+        }
+    })
+}
+
+const editTask = (selectedTask) => {
+    let task = selectedTask.firstElementChild.lastElementChild; // Takes the paragraph task.
+    console.log(task);
+    taskInput.value = task.textContent;
+    
 }
 
 // Removes only the Completed tasks after user confirmation.

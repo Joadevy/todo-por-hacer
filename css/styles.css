@@ -195,6 +195,51 @@ input[type="checkbox"] {
     text-decoration: line-through;
 }
 
+.task .settings {
+    cursor: pointer;
+    position: relative;
+}
+
+.settings .task-menu{
+    position: absolute;
+    right: 0px;
+    bottom: -50px;
+    z-index: 2;
+    transform: scale(0);
+    transition: transform 0.3s ease;
+    transform-origin: top right;
+    background-color: rgb(230, 230, 230);
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    padding: 7px 0;
+    border: 1px solid #5c15fe;
+    border-radius: 5px;
+}
+
+.settings .task-menu.show{
+    transform: scale(1);
+}
+
+.task-menu li{
+    height: 20px;
+    font-size: 16px;
+    padding: 15px 10px;
+    margin-bottom: 2px;
+    justify-content: center;
+}
+.task-menu li:first-child {
+    margin-top: -10px;
+}
+
+.task-menu li:hover{
+    opacity: .5;
+}
+
+/* 
+For the icons of the task-menu
+.task-menu li i {
+    padding-right: 8px;
+} */
+
 .removeTask>img:hover {
     opacity: 70%;
     cursor: pointer;
