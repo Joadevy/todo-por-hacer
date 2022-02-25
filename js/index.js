@@ -8,22 +8,30 @@ const pendingTasks = document.getElementById('pending');
 const completedTasks = document.getElementById('completed');
 // Defining && getting the local storage to-do list (as JSON form)
 let todos = JSON.parse(localStorage.getItem("todo-list"));
+let idEdited; // For tracking the ID in the array of an edited task.
+let isEdited = false; // For validates in the listener input.
 
-taskInput.addEventListener('keyup', (e) => {
+taskInput.addEventListener('keyup', event => {
     let userTask = taskInput.value.trim(); // Saves the task input value entered removing the whitespaces (trim method)
-    
     // Saving in localStorage
-    if (e.key == 'Enter' && userTask) { // Validates if the key pressed was 'Enter' && user sends anything != whitespaces.
-        if (!todos) { // If the todolist local doesn't exist creates an empty array to save each task.
-            todos = [];
+    if (event.key == 'Enter' && userTask) { // Validates if the key pressed was 'Enter' && user sends anything != whitespaces.
+        if (!isEdited) { // If is a new task
+            if (!todos) { // If the todolist local doesn't exist creates an empty array to save each task.
+                todos = [];
+            }
+            let taskInfo = {name: userTask, status:"pending"};
+            todos.push(taskInfo); // Push the new task into the array.
+        } else { // If is a edited task
+            console.log('el item que se edita es el de abajo c:');
+            console.log(todos[idEdited]);
+            todos[idEdited].name = userTask;
+            isEdited = false;
         }
         taskInput.value = ''; // Resets the input value
-        let taskInfo = {name: userTask, status:"pending"};
-        todos.push(taskInfo); // Push the new task into the array.
         localStorage.setItem('todo-list',JSON.stringify(todos)); // saving the array in local storage after convert it to a string.
         show('all');
     }
-})
+});
 
 sendBtn.addEventListener('click', (e) => {
     let userTask = taskInput.value.trim(); // Saves the task input value entered removing the whitespaces (trim method)
@@ -36,7 +44,7 @@ sendBtn.addEventListener('click', (e) => {
         let taskInfo = {name: userTask, status:"pending"};
         todos.push(taskInfo); // Push the new task into the array.
         localStorage.setItem('todo-list',JSON.stringify(todos)); // saving the array in local storage after convert it to a string.
-        showTodos();
+        show('all');
     }
 })
 
@@ -73,23 +81,19 @@ const updateStatus = (task) => {
    localStorage.setItem('todo-list',JSON.stringify(todos)); // Updating the data in local storage (for update the status)
 }
 
-const removeTask = (selectedTask) => {
-    // Selected task is: task.parentElement.parentElement, the entire task container: <li class="task"> 
-    taskBox.removeChild(selectedTask); // Removes the HTML element child of <ul class="task-box"></ul>: <li class="task">
-    let positionInTodos;
-        for (let todo in todos){ // Searching for the position in the array todos of the selected task to delete it.
-            if (selectedTask.firstElementChild.lastElementChild.textContent == todos[todo].name){
-                positionInTodos = todo;
-            }
-        };
-    todos.splice(positionInTodos,1); // Remove the object in the array todos.
+const removeTask = (selectedTask,id) => {
+    let completed = selectedTask.firstElementChild.lastElementChild.classList.contains('checked');
+    console.log(id);
+    console.log(completed);
+    todos.splice(id,1); // Remove the object in the array todos.
     localStorage.setItem('todo-list',JSON.stringify(todos)); // Updates the local storage with the new array todos after stringify.
-    
-    if (taskBox.firstElementChild === null) { // Displays the no tasks message if there aren't tasks.
-        taskBox.textContent = "You don't have any task here!";
-        if (container.lastElementChild.classList.value === "clear-btn"){ // Checking for the clear button to removes it.
-            container.removeChild(container.lastElementChild);
-        }
+    console.log(selectedTask);
+    if (completed == false){
+        console.log('ola');
+        show('all');
+    } else if (completed == true){
+        console.log('XAU');
+        show('completed');
     }
 }
 
@@ -141,8 +145,8 @@ const show = (status) => {
                         <div class="settings">
                             <img src = "../assets/icons/options.png" onclick ="showMenu(this)">
                             <ul class="task-menu">
-                                    <li onclick ="editTask(parentElement.parentElement.parentElement)">Edit</li>
-                                    <li onclick ="removeTask(parentElement.parentElement.parentElement)">Delete</li>
+                                    <li onclick ="editTask('${todo.name}',${id})">Edit</li>
+                                    <li onclick ="removeTask(parentElement.parentElement.parentElement,${id})">Delete</li>
                             </ul>
                         </div>
                     </li>`; 
@@ -179,8 +183,8 @@ const show = (status) => {
                         <div class="settings">
                             <img src = "../assets/icons/options.png" onclick ="showMenu(this)">
                             <ul class="task-menu">
-                                    <li onclick ="editTask(parentElement.parentElement.parentElement)">Edit</li>
-                                    <li onclick ="removeTask(parentElement.parentElement.parentElement)">Delete</li>
+                                    <li onclick ="editTask('${todo.name}',${id})">Edit</li>
+                                    <li onclick ="removeTask(parentElement.parentElement.parentElement,${id},'${todo.status}')">Delete</li>
                             </ul>
                         </div>
                     </li>`; 
@@ -214,7 +218,6 @@ const show = (status) => {
 }
 
 const showMenu = (selectedTask) => { // Displays the menu-task for edit/delete when clicks the options button.
-    console.log(selectedTask);
     let taskMenu = selectedTask.parentElement.lastElementChild; 
     taskMenu.classList.add("show");
     document.addEventListener('click', e => { // If user clicks != options, removes the taskmenu
@@ -224,11 +227,10 @@ const showMenu = (selectedTask) => { // Displays the menu-task for edit/delete w
     })
 }
 
-const editTask = (selectedTask) => {
-    let task = selectedTask.firstElementChild.lastElementChild; // Takes the paragraph task.
-    console.log(task);
-    taskInput.value = task.textContent;
-    
+const editTask = (task,id) => {
+    taskInput.value = task;
+    idEdited = id;
+    isEdited = true;
 }
 
 // Removes only the Completed tasks after user confirmation.
