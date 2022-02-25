@@ -124,6 +124,7 @@ const createButton = (status) => { // Creates a button with their onclick accord
 
 // Displaying in the DOM the tasks filtering by the status parameter: 'all tasks', 'pendings tasks', 'completed tasks'
 const show = (status) => {
+    sendBtn.textContent = "Create";
     let li = '';
     // Showing the tasks after filter it.
     if(status == 'completed' || status == 'pending'){
@@ -241,6 +242,7 @@ const editTask = (task) => {
     taskInput.value = task;
     idEdited = identifier;
     isEdited = true;
+    sendBtn.textContent = "Update";
 }
 
 // Removes only the Completed tasks after user confirmation.
