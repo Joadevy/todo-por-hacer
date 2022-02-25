@@ -128,6 +128,17 @@ const show = (status) => {
             // Removing the clear all button in the pending && completed sections
             if (container.lastElementChild.classList.value === "clear-btn"){
                 container.removeChild(container.lastElementChild);
+                /* Aca podria poner el replace.child
+                if (status == 'pending') {
+                let btnclearPending = document.createElement("BUTTON");
+                btnclearPending.textContent= 'Clear Pending';
+                btnclearAll.classList.add('clear-btn pending'); // Pending es para mandarle el e.target.classList.value == 'pending' y distinguirlo del completed.
+                btnclearPending.onclick = removeTask(pending); // Si esto no se puede hacer la funcion aca nomas, o sino probar con pasar el evento como parametro y analizarlo.
+                container.replaceChild(btnclearPending,document.querySelector('.clear-btn')); 
+                } else if (status == 'completed') {
+                    lo mismo pero para completed
+                }
+                */
             } 
     } 
     // Showing all the tasks.
@@ -151,7 +162,14 @@ const show = (status) => {
             btnclear.classList.add('clear-btn');
             btnclear.onclick = removeAllTasks; // Adding the functionality
             container.appendChild(btnclear);   
-        }
+        }  /* else if (container.lastElementChild.classList.value == 'clearPending' || == 'clearCompleted'){
+                let btnclearAll = document.createElement("BUTTON");
+                btnclearAll.textContent= 'Clear All';
+                btnclearAll.classList.add('clear-btn');
+                btnclearAll.onclick = removeAllTasks;
+                container.replaceChild(btnclearAll,document.querySelector('.clear-btn')); 
+        } */
+
         // Add the class & remove the others because this function is called when the user tips a new task.
         allTasks.classList.add('active');
         pendingTasks.classList.remove('active');
