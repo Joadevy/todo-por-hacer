@@ -242,6 +242,7 @@ const editTask = (task) => {
     taskInput.value = task;
     idEdited = identifier;
     isEdited = true;
+    taskInput.focus();
     sendBtn.textContent = "Update";
 }
 
