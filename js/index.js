@@ -106,7 +106,7 @@ const show = (status) => {
                             <p class="${isCompleted}">${todo.name}</p>
                         </label>
                         <div class="settings">
-                            <img src = "../assets/icons/options.png" onclick ="showMenu(this)">
+                            <img src = "assets/icons/options.png" onclick ="showMenu(this)">
                             <ul class="task-menu">
                                     <li onclick ="editTask('${todo.name}')">Edit</li>
                                     <li onclick ="removeTask(${id})">Delete</li>
@@ -144,7 +144,7 @@ const show = (status) => {
                             <p class="${isCompleted}">${todo.name}</p>
                         </label>
                         <div class="settings">
-                            <img src = "../assets/icons/options.png" onclick ="showMenu(this)">
+                            <img src = "assets/icons/options.png" onclick ="showMenu(this)">
                             <ul class="task-menu">
                                     <li onclick ="editTask('${todo.name}')">Edit</li>
                                     <li onclick ="removeTask(${id})">Delete</li>
