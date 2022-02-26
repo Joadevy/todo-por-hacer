@@ -255,6 +255,19 @@ input[type="checkbox"] {
     main {
         max-width: 350px; 
         margin: 1rem;
+        padding: .5rem;
+    }
+
+    .createTask-container{
+        margin: 0 1rem 1.5rem 1rem;
+    }
+
+    ul {
+        gap: 1rem;
+    }
+
+    .clear-btn {
+        margin-top: 1.5rem;
     }
 }
 
