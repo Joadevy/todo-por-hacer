@@ -234,12 +234,6 @@ input[type="checkbox"] {
     opacity: .5;
 }
 
-/* 
-For the icons of the task-menu
-.task-menu li i {
-    padding-right: 8px;
-} */
-
 .removeTask>img:hover {
     opacity: 70%;
     cursor: pointer;
@@ -255,6 +249,25 @@ For the icons of the task-menu
 
 .filter .active {
     color: #9600ff;
+}
+
+@media only screen and (max-width:450px) {
+    main {
+        max-width: 350px; 
+        margin: 1rem;
+    }
+}
+
+@media only screen and (max-width:350px) {
+    main {
+        max-width: 325px; 
+    }
+}
+
+@media only screen and (max-width:300px) {
+    main {
+        max-width: 250px; 
+    }
 }
 
 
