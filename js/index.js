@@ -6,8 +6,8 @@ const allTasks = document.getElementById('all');
 allTasks.classList.add('active'); // Adding the class to show it like clicked by default.
 const pendingTasks = document.getElementById('pending');
 const completedTasks = document.getElementById('completed');
-// Defining && getting the local storage to-do list (as JSON form)
-let todos = JSON.parse(localStorage.getItem("todo-list"));
+
+let todos = JSON.parse(localStorage.getItem("todo-list")); // Defining && getting the local storage to-do list (as JSON form)
 let idEdited; // For tracking the ID in the array of an edited task.
 let isEdited = false; // For validates in the listener input.
 
@@ -22,8 +22,8 @@ taskInput.addEventListener('keyup', event => {
             let taskInfo = {name: userTask, status:"pending"};
             todos.push(taskInfo); // Push the new task into the array.
         } else { // If is a edited task
-            todos[idEdited].name = userTask;
-            isEdited = false;
+            todos[idEdited].name = userTask; // Adding the new value of the task into their position in todos.
+            isEdited = false; // Updating the control variable.
         }
         taskInput.value = ''; // Resets the input value
         localStorage.setItem('todo-list',JSON.stringify(todos)); // saving the array in local storage after convert it to a string.
@@ -84,42 +84,11 @@ const updateStatus = (task) => {
    localStorage.setItem('todo-list',JSON.stringify(todos)); // Updating the data in local storage (for update the status)
 }
 
-const removeTask = (selectedTask,id) => {
+const removeTask = (id) => {
     todos.splice(id,1); // Remove the object in the array todos.
     localStorage.setItem('todo-list',JSON.stringify(todos)); // Updates the local storage with the new array todos after stringify.
-    showActive();
-}
-
-const removeAllTasks = () => { // Removes all the tasks after the user confirmation.
-    let userConfirmation = confirm('Do you want to delete all your tasks?')
-        if (userConfirmation) {
-            todos.splice(0,todos.length); // Remove all the elements in the todos array.
-            localStorage.setItem('todo-list',JSON.stringify(todos)); // Update the local storage after stringify the array content.
-            show('all'); // Update the DOM
-        }
-}
-
-const createButton = (status) => { // Creates a button with their onclick according to the status.
-    let btn;
-    if (status == 'all'){
-        btn = document.createElement("BUTTON");
-        btn.classList.add('clear-btn');
-        btn.textContent= 'Clear All';
-        btn.onclick = removeAllTasks;
-            return btn;
-    } else if (status == 'pending') {
-        btn = document.createElement("BUTTON");
-        btn.classList.add('clear-btn');
-        btn.textContent= 'Clear Pending';
-        btn.onclick = removePendingTasks;
-            return btn;
-    } else if(status == 'completed'){
-        btn = document.createElement("BUTTON");
-        btn.classList.add('clear-btn');
-        btn.textContent= 'Clear Completed';
-        btn.onclick = removeCompletedTasks;
-            return btn;
-    }
+    isEdited = false; // For prevent bugs with the edit because of the positions in the array.
+    showActive(); // Displaying the results and updating the listeners for editing/removing
 }
 
 // Displaying in the DOM the tasks filtering by the status parameter: 'all tasks', 'pendings tasks', 'completed tasks'
@@ -140,7 +109,7 @@ const show = (status) => {
                             <img src = "../assets/icons/options.png" onclick ="showMenu(this)">
                             <ul class="task-menu">
                                     <li onclick ="editTask('${todo.name}')">Edit</li>
-                                    <li onclick ="removeTask(parentElement.parentElement.parentElement,${id})">Delete</li>
+                                    <li onclick ="removeTask(${id})">Delete</li>
                             </ul>
                         </div>
                     </li>`; 
@@ -178,7 +147,7 @@ const show = (status) => {
                             <img src = "../assets/icons/options.png" onclick ="showMenu(this)">
                             <ul class="task-menu">
                                     <li onclick ="editTask('${todo.name}')">Edit</li>
-                                    <li onclick ="removeTask(parentElement.parentElement.parentElement,${id},'${todo.status}')">Delete</li>
+                                    <li onclick ="removeTask(${id})">Delete</li>
                             </ul>
                         </div>
                     </li>`; 
@@ -222,9 +191,10 @@ const showActive = () => {
     }
 }
 
-const showMenu = (selectedTask) => { // Displays the menu-task for edit/delete when clicks the options button.
-    let taskMenu = selectedTask.parentElement.lastElementChild; 
-    taskMenu.classList.add("show");
+// Displays the menu-task for edit/delete when clicks the options button.
+const showMenu = (selectedTask) => {
+    let taskMenu = selectedTask.parentElement.lastElementChild;
+    taskMenu.classList.add("show"); // Adding the class so as to makes it visible.
     document.addEventListener('click', e => { // If user clicks != options, removes the taskmenu
         if (e.target != selectedTask)  {
             taskMenu.classList.remove("show");
@@ -232,39 +202,73 @@ const showMenu = (selectedTask) => { // Displays the menu-task for edit/delete w
     })
 }
 
-const editTask = (task) => {
-    let identifier;
-    for (let todo in todos) {
-         if (todos[todo].name == task) {
-            identifier = todo;
-        } 
-    }
-    taskInput.value = task;
-    idEdited = identifier;
-    isEdited = true;
-    taskInput.focus();
-    sendBtn.textContent = "Update";
+// Removes all the tasks after the user confirmation.
+const removeAllTasks = () => {
+    let userConfirmation = confirm('Do you want to delete all your tasks?')
+        if (userConfirmation) {
+            todos.splice(0,todos.length); // Remove all the elements in the todos array.
+            localStorage.setItem('todo-list',JSON.stringify(todos)); // Update the local storage after stringify the array content.
+            show('all'); // Update the DOM
+        }
 }
 
 // Removes only the Completed tasks after user confirmation.
 const removeCompletedTasks = ()=> {
     let userConfirmation = confirm('Do you want to delete your completed tasks?');
     if (userConfirmation && todos) {
-        pendingArray = todos.filter(task => task.status == 'pending');
-        todos = pendingArray;
-        localStorage.setItem('todo-list',JSON.stringify(todos));
-        show('completed');
+        pendingArray = todos.filter(task => task.status == 'pending'); // Creating an array with pending tasks only.
+        todos = pendingArray; // Merging the pending array into the todos.
+        localStorage.setItem('todo-list',JSON.stringify(todos)); // Updating the local storage.
+        show('completed'); // Showing the completed tasks remaining (0 after removing)
     }
 }
 
 // Removes only the pending tasks after user confirmation.
 const removePendingTasks = ()=> {
     let userConfirmation = confirm('Do you want to delete your pending tasks?');
-    if (userConfirmation && todos) {
-        let completedArray = todos.filter(task => task.status == 'completed');
-        todos = completedArray;
-        localStorage.setItem('todo-list',JSON.stringify(todos));
-        show('pending');
+    if (userConfirmation && todos) { 
+        let completedArray = todos.filter(task => task.status == 'completed'); // Creating an array with completed tasks only.
+        todos = completedArray; // Merging the completed array into the todos.
+        localStorage.setItem('todo-list',JSON.stringify(todos)); // Updating the local storage.
+        show('pending'); // Showing the pending tasks remaining (0 after removing)
+    }
+}
+
+const editTask = (task) => { 
+    let identifier;
+    for (let todo in todos) { // Looking for the index of the selected element in the array todos.
+         if (todos[todo].name == task) {
+            identifier = todo;
+        } 
+    }
+    taskInput.value = task; // Adding the actual task to the input to edit.
+    idEdited = identifier; // Updating the global parameter.
+    isEdited = true; // Updating the global parameter.
+    taskInput.focus(); // Adding focus to the input to edit the selected task.
+    sendBtn.textContent = "Update"; // Changing the send button to 'update'
+}
+
+// Creates a button with their onclick according to the status.
+const createButton = (status) => {
+    let btn;
+    if (status == 'all'){
+        btn = document.createElement("BUTTON");
+        btn.classList.add('clear-btn');
+        btn.textContent= 'Clear All';
+        btn.onclick = removeAllTasks;
+            return btn;
+    } else if (status == 'pending') {
+        btn = document.createElement("BUTTON");
+        btn.classList.add('clear-btn');
+        btn.textContent= 'Clear Pending';
+        btn.onclick = removePendingTasks;
+            return btn;
+    } else if(status == 'completed'){
+        btn = document.createElement("BUTTON");
+        btn.classList.add('clear-btn');
+        btn.textContent= 'Clear Completed';
+        btn.onclick = removeCompletedTasks;
+            return btn;
     }
 }
 
